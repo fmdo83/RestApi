@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("p").click(function(){
+        $(this).hide();
+    });
+});
+
+function getToken()
+{
+  var user = $('#user').val();
+  var pass = $('#password').val();
+  var nombre = $('#nombre').val();
+  console.log(user);
+  $.ajax({
+        url: "http://localhost:3000/api/token",
+        data: "user=" + nombre,
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader("authorization",
+          "Basic " + btoa(user + ":" + pass))
+        }
+    }).then(function(data) {
+       console.log(data);
+       if(data.value == true){
+        $('#token').text(data.token);
+       }
+       else {
+         alert(data.message);
+       }
+    });
+}
+
+</script>
+</head>
+<body>
+  <label for="u">Usuario  </label><input type="text" id="user"></br>
+  <label for="p">Password </label><input type="text" id="password"></br></br>
+  <label for="n">Nombre </label><input type="text" id="nombre"></br>
+  <button type="button" onclick="getToken()">Give me the token!</button></br></br>
+  <label id="token">Token</label></br>
+</body>
+</html>
